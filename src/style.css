@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Open Sans", sans-serif;
+  color: #202123;
+  background: #E1E1E1;
+}
+
+.flight-card{
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+}
