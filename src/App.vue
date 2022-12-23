@@ -23,25 +23,65 @@ const resetAll = () => {
     const checkbox = optionsBoxes[i];
     checkbox.checked = false;
   }
-  flights.value = data.flights
+  flights.value = data.flights;
 };
 
-const optionsSort = (filter: any) => {};
+const optionsSort = (filter: any) => {
+  if (filter.includes("direct")) {
+    filterDirect();
+  }
+  if (filter.includes("baggage")) {
+    filterBaggage();
+  }
+  if (filter.includes("returnable")) {
+    filterReturnable();
+  }
+};
+
+const filterDirect = () => {
+  let sorted = []
+  for(let i = 0; i < flights.value.length; i++){
+    if(flights.value[i].itineraries[0][0].stops === 0){
+      sorted.push(flights.value[i])
+    }
+  }
+  flights.value = sorted
+}
+
+const filterBaggage = () => {
+  let sorted = []
+  for(let i = 0; i < flights.value.length; i++){
+    if(flights.value[i].itineraries[0][0].segments[0].baggage_options[0].value > 0){
+      sorted.push(flights.value[i])
+    }
+  }
+  flights.value = sorted
+}
+
+const filterReturnable = () => {
+  let sorted = []
+  for(let i = 0; i < flights.value.length; i++){
+    if(flights.value[i].itineraries[0][0].refundable === true){
+      sorted.push(flights.value[i])
+    }
+  }
+  flights.value = sorted
+}
 
 const airlinesSort = (filter: any) => {
-  flights.value = data.flights;
-  if (filter.length && !filter.includes('all')) {
+  if (filter.length && !filter.includes("all")) {
     let filtred = [] as Array<any>;
     for (let i = 0; i < flights.value.length; i++) {
       for (let j = 0; j < filter.length; j++) {
-        if (flights.value[i].itineraries[0][0].carrier === filter[j]) {
+        if (flights.value[i].validating_carrier === filter[j]) {
           filtred.push(flights.value[i]);
         }
       }
     }
     flights.value = filtred;
+  }else{
+    flights.value = data.flights
   }
-  
 };
 </script>
 
