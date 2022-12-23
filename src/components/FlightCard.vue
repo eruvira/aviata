@@ -4,8 +4,8 @@ const props = defineProps<{
   hop: any;
 }>();
 
-const options = { day: "numeric", month: "short" };
-const weekday = { weekday: "short" };
+const options: object = { day: "numeric", month: "short" };
+const weekday: object = { weekday: "short" };
 
 const imgPath = computed(() => {
   return `https://aviata.kz/static/airline-logos/80x80/${props.hop.validating_carrier}.png`;
