@@ -3,7 +3,7 @@
 <template>
   <div class="flex flight-card rounded flex-col lg:flex-row">
     <div
-      class="bg-white w-full pt-[18px] px-5 lg:pt-10 lg:pb-5 lg:pl-11 lg:w-9/12"
+      class="bg-white w-full rounded-t pt-[18px] px-5 lg:pt-10 lg:pb-5 lg:pl-11 lg:w-9/12 lg:rounded-tl lg:rounded-bl lg:rounded-tr-none"
     >
       <div
         class="flex flex-col lg:flex-row lg:items-center lg:justify-start lg:mb-[50px]"
@@ -93,7 +93,7 @@
       </div>
     </div>
     <div
-      class="bg-[#F5F5F5] w-fill flex flex-col items-center px-5 pt-3 pb-[15px] lg:w-4/12"
+      class="bg-[#F5F5F5] rounded-b w-fill flex flex-col items-center px-5 pt-3 pb-[15px] lg:w-4/12 lg:rounded-tr lg:rounded-br lg:rounded-bl-none"
     >
       <p class="text-2xl leading-7 mb-[13px]">590 240 ₸</p>
       <button
