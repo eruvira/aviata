@@ -1,8 +1,45 @@
+<script setup lang="ts">
+import { ref } from "vue";
+
+const selectedOptions = ref([] as Array<String>);
+
+const emit = defineEmits<{
+  (e: 'sortByOptions', selOptions: Array<String>): void
+  }>()
+
+const reset = function () {
+  const checkboxes = document.getElementsByClassName(
+    "opBox"
+  ) as HTMLCollectionOf<HTMLInputElement>;
+  for (let i = 0; i < checkboxes.length; i++) {
+    const checkbox = checkboxes[i];
+    checkbox.checked = false;
+  }
+  selectedOptions.value = [];
+  emit('sortByOptions', selectedOptions.value)
+};
+
+const getValue = function () {
+  let options = new Array<String>();
+  const checkboxes = document.getElementsByClassName(
+    "opBox"
+  ) as HTMLCollectionOf<HTMLInputElement>;
+  for (let i = 0; i < checkboxes.length; i++) {
+    const checkbox = checkboxes[i];
+    if (checkbox.checked) {
+      options.push(checkbox.value);
+    }
+  }
+  selectedOptions.value = options
+  emit('sortByOptions', selectedOptions.value)
+};
+</script>
+
 <template>
   <div class="bg-[#F5F5F5] rounded w-full">
-    <div class="flex mb-3 justify-between items-center pt-3 px-3 ">
+    <div class="flex mb-3 justify-between items-center pt-3 px-3">
       <h2 class="font-bold text-sm">Опции тарифа</h2>
-      <div class="custom-tooltip relative inline-block cursor-pointer">
+      <div class="custom-tooltip relative inline-block cursor-pointer" @click="reset">
         <svg
           width="20"
           height="20"
@@ -17,23 +54,32 @@
             fill="#B9B9B9"
           />
         </svg>
-        <span class="tooltip-text bg-white text-xs border-[#E1E1E1] absolute p-3 w-max rounded-md border left-2/4 bottom-[175%] ml-[-60px]">Сбросить выбор</span>
+        <span
+          class="tooltip-text bg-white text-xs border-[#E1E1E1] absolute p-3 w-max rounded-md border left-2/4 bottom-[175%] ml-[-60px]"
+          >Сбросить выбор</span
+        >
       </div>
     </div>
     <div class="pb-3">
-      <label class="custom-checkbox text-xs flex items-center px-3 hover:bg-[#EBEBEB]">
+      <label
+        class="custom-checkbox text-xs flex items-center px-3 hover:bg-[#EBEBEB]"
+      >
         Только прямые
-        <input type="checkbox" />
+        <input type="checkbox" value="direct" class="opBox"  @click="getValue"/>
         <span class="custom-box"> </span>
       </label>
-      <label class="custom-checkbox text-xs flex items-center px-3 hover:bg-[#EBEBEB]">
+      <label
+        class="custom-checkbox text-xs flex items-center px-3 hover:bg-[#EBEBEB]"
+      >
         Только с багажом
-        <input type="checkbox" />
+        <input type="checkbox" value="baggage" class="opBox"  @click="getValue"/>
         <span class="custom-box"> </span>
       </label>
-      <label class="custom-checkbox text-xs flex items-center px-3 hover:bg-[#EBEBEB]">
+      <label
+        class="custom-checkbox text-xs flex items-center px-3 hover:bg-[#EBEBEB]"
+      >
         Только возвратные
-        <input type="checkbox" />
+        <input type="checkbox" value="returnable" class="opBox"  @click="getValue"/>
         <span class="custom-box"> </span>
       </label>
     </div>
@@ -111,7 +157,6 @@
 .custom-tooltip:hover path {
   fill: #7284e4;
 }
-
 
 .tooltip-text {
   display: none;

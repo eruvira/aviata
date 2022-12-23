@@ -58,15 +58,7 @@ const getIsDay = computed(() => {
   if (diff > 0) return "+" + diff;
 });
 
-const travelTime = computed(() => {
-  let timeSec = props.hop.itineraries[0][0].traveltime;
-  let minutesAll = Math.floor(timeSec / 60);
-  let hours = Math.floor(minutesAll / 60);
-  let minutes = minutesAll % 60;
-  return hours + " " + "ч" + " " + minutes + " " + "м";
-});
-
-const layoverTime = function(secs: number){
+const secsToTime = function(secs: number){
   let minutesAll = Math.floor(secs / 60);
   let hours = Math.floor(minutesAll / 60);
   let minutes = minutesAll % 60;
@@ -95,7 +87,7 @@ const layoverTime = function(secs: number){
             "
             class="text-xs lg:hidden"
           >
-            {{ hop.itineraries[0][0].segments[0].baggage_options[0].value }} кг
+            {{ hop.itineraries[0][0].segments[0].baggage_options[0].value }} {{ hop.itineraries[0][0].segments[0].baggage_options[0].unit === 'KG' ? 'кг' : 'штука' }}
           </p>
           <p v-else class="text-xs lg:hidden">Нет багажа</p>
         </div>
@@ -124,7 +116,7 @@ const layoverTime = function(secs: number){
             <p class="text-[10px] leading-[12px] uppercase text-[#B9B9B9]">
               {{ hop.itineraries[0][0].segments[0].origin_code }}
             </p>
-            <p class="text-xs leading-[18px]">{{ travelTime }}</p>
+            <p class="text-xs leading-[18px]">{{ secsToTime(props.hop.itineraries[0][0].traveltime) }}</p>
             <p class="text-[10px] leading-[12px] uppercase text-[#B9B9B9]">
               {{
                 hop.itineraries[0][0].segments[
@@ -153,9 +145,9 @@ const layoverTime = function(secs: number){
 
           <p
             v-for="index in hop.itineraries[0][0].stops" :key="index"
-            class="text-sm text-[#FF9900] mt-4 mb-[30px] lg:mt-0.5 lg:mb-0"
+            class="text-[12px] text-[#FF9900] mt-4 mb-[30px] lg:mt-0.5 lg:mb-0"
           >
-            через {{  hop.itineraries[0][0].segments[index-1].dest }}, {{ layoverTime(hop.itineraries[0][0].layovers[index-1]) }}
+            через {{  hop.itineraries[0][0].segments[index-1].dest }}, {{ secsToTime(hop.itineraries[0][0].layovers[index-1]) }}
           </p>
         </div>
 
@@ -205,7 +197,7 @@ const layoverTime = function(secs: number){
           v-if="hop.itineraries[0][0].segments[0].baggage_options[0].value > 0"
           class="text-xs m-auto"
         >
-          {{ hop.itineraries[0][0].segments[0].baggage_options[0].value }} кг
+          {{ hop.itineraries[0][0].segments[0].baggage_options[0].value }} {{ hop.itineraries[0][0].segments[0].baggage_options[0].unit === 'KG' ? 'кг' : 'штука' }}
         </p>
         <p v-else class="text-xs m-auto">Нет багажа</p>
         <button

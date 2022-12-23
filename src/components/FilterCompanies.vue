@@ -1,9 +1,15 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 const props = defineProps<{
   companies: Object;
 }>();
 
-let selectedAirlines = new Array<String>
+const emit = defineEmits<{
+  (e: 'sortByAirlines', selAirlines: Array<String>): void
+  }>()
+
+let selectedAirlines = ref([] as Array<String>)
 
 const value = function (value: any) {
   return Object.keys(props.companies).find(
@@ -19,9 +25,19 @@ const reset = function () {
     const checkbox = checkboxes[i];
     checkbox.checked = false;
   }
-  selectedAirlines.length = 0
+  selectedAirlines.value = []
+  emit('sortByAirlines', selectedAirlines.value)
 };
 
+const resetButAll = function () {
+  const checkboxes = document.getElementsByClassName(
+    "box"
+  ) as HTMLCollectionOf<HTMLInputElement>;
+  for (let i = 1; i < checkboxes.length; i++) {
+    const checkbox = checkboxes[i];
+    checkbox.checked = false;
+  }
+}
 
 const getValue = function () {
   let airlines = new Array<String>();
@@ -34,7 +50,8 @@ const getValue = function () {
       airlines.push(checkbox.value);
     }
   }
-  selectedAirlines = airlines
+  selectedAirlines.value = airlines
+  emit('sortByAirlines', selectedAirlines.value)
 };
 </script>
 
@@ -71,7 +88,7 @@ const getValue = function () {
         class="custom-checkbox text-xs flex items-center px-3 hover:bg-[#EBEBEB]"
       >
         Все
-        <input type="checkbox" value="all" class="box" />
+        <input type="checkbox" value="all" class="box"  @click="getValue(), resetButAll()"/>
         <span class="custom-box"> </span>
       </label>
       <label

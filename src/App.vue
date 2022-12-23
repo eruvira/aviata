@@ -2,28 +2,75 @@
 import FilterOptions from "./components/FilterOptions.vue";
 import FilterCompanies from "./components/FilterCompanies.vue";
 import FlightCard from "./components/FlightCard.vue";
-import data from './assets/results.json' 
+import data from "./assets/results.json";
+import { ref } from "vue";
 
-const airlines = data.airlines
-const flights = data.flights
+const airlines = data.airlines;
+const flights = ref(data.flights);
+
+const resetAll = () => {
+  let airlinesBoxes = document.getElementsByClassName(
+    "box"
+  ) as HTMLCollectionOf<HTMLInputElement>;
+  let optionsBoxes = document.getElementsByClassName(
+    "opBox"
+  ) as HTMLCollectionOf<HTMLInputElement>;
+  for (let i = 0; i < airlinesBoxes.length; i++) {
+    const checkbox = airlinesBoxes[i];
+    checkbox.checked = false;
+  }
+  for (let i = 0; i < optionsBoxes.length; i++) {
+    const checkbox = optionsBoxes[i];
+    checkbox.checked = false;
+  }
+  flights.value = data.flights
+};
+
+const optionsSort = (filter: any) => {};
+
+const airlinesSort = (filter: any) => {
+  flights.value = data.flights;
+  if (filter.length && !filter.includes('all')) {
+    let filtred = [] as Array<any>;
+    for (let i = 0; i < flights.value.length; i++) {
+      for (let j = 0; j < filter.length; j++) {
+        if (flights.value[i].itineraries[0][0].carrier === filter[j]) {
+          filtred.push(flights.value[i]);
+        }
+      }
+    }
+    flights.value = filtred;
+  }
+  
+};
 </script>
 
 <template>
-  <div class="lg:grid pt-4 px-4 pb-5 m-auto gap-5 main-page xl:max-w-[1140px] xl:px-0 xl:lg:pt-[50px]">
+  <div
+    class="lg:grid pt-4 px-4 pb-5 m-auto gap-5 main-page xl:max-w-[1140px] xl:px-0 xl:lg:pt-[50px]"
+  >
     <div class="flex flex-col gap-3 mb-[23px]">
-      <FilterOptions />
-      <FilterCompanies :companies="airlines"/>
-      <button class="text-xs text-[#7284E4] border-b-[1px] border-dashed border-[#7284E4] pb-0.5 leading-3 h-fit w-fit">Сбросить все фильтры</button>
+      <FilterOptions @sortByOptions="optionsSort" />
+      <FilterCompanies :companies="airlines" @sortByAirlines="airlinesSort" />
+      <button
+        class="text-xs text-[#7284E4] border-b-[1px] border-dashed border-[#7284E4] pb-0.5 leading-3 h-fit w-fit"
+        @click="resetAll"
+      >
+        Сбросить все фильтры
+      </button>
     </div>
     <div class="flex flex-col gap-3">
-      <FlightCard v-for="(flight, index) in flights" :key="'flight'+index" :hop="flight"/>
+      <FlightCard
+        v-for="(flight, index) in flights"
+        :key="'flight' + index"
+        :hop="flight"
+      />
     </div>
   </div>
 </template>
 
 <style scoped>
-.main-page{
+.main-page {
   grid-template-columns: 0.8fr 3fr;
 }
-
 </style>
