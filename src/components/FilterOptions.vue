@@ -1,6 +1,6 @@
 <template>
   <div class="bg-[#F5F5F5] rounded w-full">
-    <div class="flex mb-3 justify-between items-center pt-3 px-3">
+    <div class="flex mb-3 justify-between items-center pt-3 px-3 ">
       <h2 class="font-bold text-sm">Опции тарифа</h2>
       <div class="custom-tooltip relative inline-block cursor-pointer">
         <svg
@@ -114,7 +114,7 @@
 
 
 .tooltip-text {
-  visibility: hidden;
+  display: none;
   text-align: center;
   opacity: 0;
   transition: opacity 0.3s;
@@ -143,7 +143,7 @@
 }
 
 .custom-tooltip:hover .tooltip-text {
-  visibility: visible;
+  display: block;
   opacity: 1;
 }
 </style>

@@ -114,7 +114,7 @@
 
 
 .tooltip-text {
-  visibility: hidden;
+  display: none;
   text-align: center;
   opacity: 0;
   transition: opacity 0.3s;
@@ -143,7 +143,7 @@
 }
 
 .custom-tooltip:hover .tooltip-text {
-  visibility: visible;
+ display: block;
   opacity: 1;
 }
 </style>

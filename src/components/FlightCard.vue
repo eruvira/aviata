@@ -8,12 +8,15 @@
       <div
         class="flex flex-col lg:flex-row lg:items-center lg:justify-start lg:mb-[50px]"
       >
-        <div class="flex items-center gap-3 mr-auto">
-          <img
-            src="https://aviata.kz/static/airline-logos/80x80/KC.png"
-            class="h-5"
-          />
-          <p class="font-semibold text-base leading-[19px]">Air Astana</p>
+        <div class="mr-auto flex justify-between w-full lg:w-fit">
+          <div class="flex items-center gap-3">
+            <img
+              src="https://aviata.kz/static/airline-logos/80x80/KC.png"
+              class="h-5"
+            />
+            <p class="font-semibold text-base leading-[19px]">Air Astana</p>
+          </div>
+          <p class="text-xs lg:hidden">Нет багажа</p>
         </div>
         <div class="hidden mr-auto lg:block">
           <p class="text-xs">25 ноя, вс</p>
@@ -111,4 +114,8 @@
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.flight-card {
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+}
+</style>
