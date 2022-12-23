@@ -1,8 +1,51 @@
+<script setup lang="ts">
+const props = defineProps<{
+  companies: Object;
+}>();
+
+let selectedAirlines = new Array<String>
+
+const value = function (value: any) {
+  return Object.keys(props.companies).find(
+    (key) => props.companies[key as keyof typeof props.companies] === value
+  );
+};
+
+const reset = function () {
+  const checkboxes = document.getElementsByClassName(
+    "box"
+  ) as HTMLCollectionOf<HTMLInputElement>;
+  for (let i = 0; i < checkboxes.length; i++) {
+    const checkbox = checkboxes[i];
+    checkbox.checked = false;
+  }
+  selectedAirlines.length = 0
+};
+
+
+const getValue = function () {
+  let airlines = new Array<String>();
+  const checkboxes = document.getElementsByClassName(
+    "box"
+  ) as HTMLCollectionOf<HTMLInputElement>;
+  for (let i = 0; i < checkboxes.length; i++) {
+    const checkbox = checkboxes[i];
+    if (checkbox.checked) {
+      airlines.push(checkbox.value);
+    }
+  }
+  selectedAirlines = airlines
+};
+</script>
+
 <template>
   <div class="bg-[#F5F5F5] rounded w-full">
     <div class="flex mb-3 justify-between items-center pt-3 px-3">
       <h2 class="font-bold text-sm">Авиакомпании</h2>
-      <div class="custom-tooltip relative inline-block cursor-pointer">
+      <div
+        class="custom-tooltip relative inline-block cursor-pointer"
+        @click="reset"
+      >
         <svg
           width="20"
           height="20"
@@ -17,23 +60,32 @@
             fill="#B9B9B9"
           />
         </svg>
-        <span class="tooltip-text bg-white text-xs border-[#E1E1E1] absolute p-3 w-max rounded-md border left-2/4 bottom-[175%] ml-[-60px]">Сбросить выбор</span>
+        <span
+          class="tooltip-text bg-white text-xs border-[#E1E1E1] absolute p-3 w-max rounded-md border left-2/4 bottom-[175%] ml-[-60px]"
+          >Сбросить выбор</span
+        >
       </div>
     </div>
-    <div class="pb-3">
-      <label class="custom-checkbox text-xs flex items-center px-3 hover:bg-[#EBEBEB]">
-        Только прямые
-        <input type="checkbox" />
+    <div class="pb-3 h-80 overflow-y-scroll pr-0.5">
+      <label
+        class="custom-checkbox text-xs flex items-center px-3 hover:bg-[#EBEBEB]"
+      >
+        Все
+        <input type="checkbox" value="all" class="box" />
         <span class="custom-box"> </span>
       </label>
-      <label class="custom-checkbox text-xs flex items-center px-3 hover:bg-[#EBEBEB]">
-        Только с багажом
-        <input type="checkbox" />
-        <span class="custom-box"> </span>
-      </label>
-      <label class="custom-checkbox text-xs flex items-center px-3 hover:bg-[#EBEBEB]">
-        Только возвратные
-        <input type="checkbox" />
+      <label
+        class="custom-checkbox text-xs flex items-center px-3 hover:bg-[#EBEBEB]"
+        v-for="(val, index) in props.companies"
+        :key="'airline' + index"
+      >
+        {{ val }}
+        <input
+          type="checkbox"
+          :value="value(val)"
+          class="box"
+          @click="getValue"
+        />
         <span class="custom-box"> </span>
       </label>
     </div>
@@ -112,7 +164,6 @@
   fill: #7284e4;
 }
 
-
 .tooltip-text {
   display: none;
   text-align: center;
@@ -143,7 +194,21 @@
 }
 
 .custom-tooltip:hover .tooltip-text {
- display: block;
+  display: block;
   opacity: 1;
+}
+
+::-webkit-scrollbar {
+  width: 2px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f5f5f5;
+  margin-right: 100px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #e1e1e1;
+  border-radius: 2px;
 }
 </style>
