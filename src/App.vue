@@ -96,8 +96,6 @@ const airlinesSort = (filter: any) => {
       }
     }
     flights.value = filtred;
-  }else{
-    flights.value = data.flights
   }
 };
 </script>
